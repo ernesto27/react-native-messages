@@ -3,14 +3,76 @@ import { Button, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Container, Content, List, ListItem, Left, Body, Right, Thumbnail, Text } from 'native-base';
+import { Item, Input, Container, Content, List, ListItem, Left, Body, Right, Thumbnail, Text } from 'native-base';
 
 
-function DetailsScreen() {
+function DetailsScreen({ route, navigation }) {
+  
+  navigation.setOptions({
+    title: route.params.user 
+  });
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Details!</Text>
-    </View>
+    <Container>
+      <Content>
+          <View style={{backgroundColor: 'red', width: '30%', padding: 8, marginLeft: 4, borderRadius: 6}}>  
+          <Text>Left</Text>
+          </View>
+
+          <View style={{flex: 1}}>
+            <Text style={{textAlign: 'right'}}>Solve This</Text>
+          </View> 
+
+          <View>  
+          <Text>Left</Text>
+          </View>
+          
+          <View style={{flex: 1}}>
+            <Text style={{textAlign: 'right'}}>Solve This</Text>
+          </View> 
+
+          <View>  
+          <Text>Left</Text>
+          </View>
+          
+          <View style={{flex: 1}}>
+            <Text style={{textAlign: 'right'}}>Solve This</Text>
+          </View> 
+
+          <View>  
+          <Text>Left</Text>
+          </View>
+          
+          <View style={{flex: 1}}>
+            <Text style={{textAlign: 'right'}}>Solve This</Text>
+          </View> 
+
+          <View>  
+          <Text>Left</Text>
+          </View>
+          
+          <View style={{flex: 1}}>
+            <Text style={{textAlign: 'right'}}>Solve This</Text>
+          </View> 
+
+          <View>  
+          <Text>Left</Text>
+          </View>
+          
+          <View style={{flex: 1}}>
+            <Text style={{textAlign: 'right'}}>Solve This</Text>
+          </View> 
+
+          <View>  
+          <Text>Left</Text>
+          </View>
+          
+          <View style={{flex: 1}}>
+            <Text style={{textAlign: 'right'}}>Solve This</Text>
+          </View> 
+        
+        
+      </Content>
+    </Container>
   );
 }
 
@@ -23,7 +85,7 @@ function HomeScreen({ navigation }) {
             return (
               <ListItem 
                 key={i} 
-                onPress={() => navigation.navigate('Details')}
+                onPress={() => navigation.navigate({ name: 'Details', params: { user: 'Ernesto'} })}
                 avatar>
                 <Left>
                   <Thumbnail source={{ uri: 'https://cdn.iconscout.com/icon/free/png-512/laptop-user-1-1179329.png' }} />
@@ -76,7 +138,7 @@ function SettingsStackScreen() {
   return (
     <SettingsStack.Navigator>
       <SettingsStack.Screen name="Home" component={SettingsScreen} />
-      <SettingsStack.Screen name="Details" component={DetailsScreen} />
+      {/* <SettingsStack.Screen name="Details" component={DetailsScreen} /> */}
     </SettingsStack.Navigator>
   );
 }
