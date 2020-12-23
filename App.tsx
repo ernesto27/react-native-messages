@@ -1,8 +1,10 @@
 import * as React from 'react';
-import { Button, Text, View } from 'react-native';
+import { Button, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Container, Content, List, ListItem, Left, Body, Right, Thumbnail, Text } from 'native-base';
+
 
 function DetailsScreen() {
   return (
@@ -14,13 +16,34 @@ function DetailsScreen() {
 
 function HomeScreen({ navigation }) {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Home screen</Text>
-      <Button
-        title="Go to Details"
-        onPress={() => navigation.navigate('Details')}
-      />
-    </View>
+      <Container>
+        <Content>
+          <List>
+            {[...Array(12)].map((e, i) => { 
+            return (
+              <ListItem 
+                key={i} 
+                onPress={() => navigation.navigate('Details')}
+                avatar>
+                <Left>
+                  <Thumbnail source={{ uri: 'https://cdn.iconscout.com/icon/free/png-512/laptop-user-1-1179329.png' }} />
+                </Left>
+                <Body>
+                  <Text>Kumar Pratik</Text>
+                  <Text note>Doing what you like will always keep you happy . .</Text>
+                </Body>
+                <Right>
+                  <Text note>3:43 pm</Text>
+                </Right>
+              </ListItem>)
+            })}
+          </List>
+        </Content>
+      </Container>
+        // <Button
+        //   title="Go to Details"
+        //   onPress={() => navigation.navigate('Details')}
+        // />
   );
 }
 
