@@ -3,7 +3,6 @@ import {
   View, 
   KeyboardAvoidingView, 
   Platform, 
-  StyleSheet,
   ScrollView
 } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -11,19 +10,15 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { 
   Item, 
-  Input, 
-  Container, 
-  Content, 
-  List, 
-  ListItem, 
-  Left, 
-  Body, 
-  Right, 
-  Thumbnail, 
+  Input,  
+  Content,  
   Text,
   Form,
   Button
 } from 'native-base';
+import { Provider } from 'react-redux';
+import store  from './src/store'
+import { HomeScreen } from './src/messages/HomeScreen'
 
 
 function DetailsScreen({ route, navigation }) {
@@ -106,35 +101,6 @@ function DetailsScreen({ route, navigation }) {
   );
 }
 
-function HomeScreen({ navigation }) {
-  return (
-      <Container>
-        <Content>
-          <List>
-            {[...Array(12)].map((e, i) => { 
-            return (
-              <ListItem 
-                key={i} 
-                onPress={() => navigation.navigate({ name: 'Details', params: { user: 'Ernesto'} })}
-                avatar>
-                <Left>
-                  <Thumbnail source={{ uri: 'https://cdn.iconscout.com/icon/free/png-512/laptop-user-1-1179329.png' }} />
-                </Left>
-                <Body>
-                  <Text>Kumar Pratik</Text>
-                  <Text note>Doing what you like will always keep you happy . .</Text>
-                </Body>
-                <Right>
-                  <Text note>3:43 pm</Text>
-                </Right>
-              </ListItem>)
-            })}
-          </List>
-        </Content>
-      </Container>
-  );
-}
-
 function SettingsScreen({ navigation }) {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -183,11 +149,13 @@ const Tab = createBottomTabNavigator();
 export default function App() {
 
   return (
-    <NavigationContainer>
-      <HomeStack.Navigator>
-        <HomeStack.Screen name="Home" component={HomeTabs} />
-        <HomeStack.Screen name="Details" component={DetailsScreen} />
-      </HomeStack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <HomeStack.Navigator>
+          <HomeStack.Screen name="Home" component={HomeTabs} />
+          <HomeStack.Screen name="Details" component={DetailsScreen} />
+        </HomeStack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
