@@ -18,88 +18,10 @@ import {
 } from 'native-base';
 import { Provider } from 'react-redux';
 import store  from './src/store'
-import { HomeScreen } from './src/messages/HomeScreen'
+import { HomeScreen } from './src/messages/HomeScreen';
+import { DetailMessageScreen } from './src/messages/DetailMessageScreen';
 
 
-function DetailsScreen({ route, navigation }) {
-  
-  // navigation.setOptions({
-  //   title: route.params.user,
-  //   tabBarVisible: false
-  // });
-
-  return (
-    <KeyboardAvoidingView 
-      enabled 
-      behavior={ Platform.OS === 'ios'? 'padding': null}
-      style={{
-        flexGrow: 1
-      }}
-    >
-      <ScrollView 
-        bounces= {false}
-        style={{
-          flex: 1
-        }}
-      >
-        <View 
-          style={{
-        
-          }}
-        >
-          <Content>
-            {[...Array(12)].map((e, i) => { 
-              return (<React.Fragment>
-              <Text style={{
-                backgroundColor: '#f5f5f5', 
-                width: '47%', 
-                padding: 8, 
-                marginLeft: 4, 
-                borderRadius: 6,
-                marginTop: 4
-              }}>
-                Hola como estas todo bine?
-              </Text>
-
-              <Text style={{
-                backgroundColor: '#86f78c',
-                width: '47%',
-                alignSelf: 'flex-end',
-                marginRight: 6,
-                padding: 8, 
-                borderRadius: 6    
-              }}>dfsfsdfsadfs dfadfsa afaf afa afa fd</Text></React.Fragment>)
-            })}
-
-          </Content>
-        </View>
-
-        <View style={{
-            backgroundColor: 'white',
-        }}>
-          <Form>
-            <Item>
-              <Input 
-                placeholder={"New message"}
-              />
-
-              <Button
-                style={{
-                  marginRight: 7,
-                  marginTop: 2,
-                  padding: 2
-                }}
-                info
-              >
-                <Text>Send</Text>
-              </Button>
-            </Item>
-          </Form>
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
-  );
-}
 
 function SettingsScreen({ navigation }) {
   return (
@@ -115,14 +37,6 @@ function SettingsScreen({ navigation }) {
 
 const HomeStack = createStackNavigator();
 
-function HomeStackScreen() {
-  return (
-    <HomeStack.Navigator>
-      <HomeStack.Screen name="Chats" component={HomeScreen} />
-      <HomeStack.Screen name="Details" component={DetailsScreen} />
-    </HomeStack.Navigator>
-  );
-}
 
 const SettingsStack = createStackNavigator();
 
@@ -153,7 +67,7 @@ export default function App() {
       <NavigationContainer>
         <HomeStack.Navigator>
           <HomeStack.Screen name="Home" component={HomeTabs} />
-          <HomeStack.Screen name="Details" component={DetailsScreen} />
+          <HomeStack.Screen name="Details" component={DetailMessageScreen} />
         </HomeStack.Navigator>
       </NavigationContainer>
     </Provider>

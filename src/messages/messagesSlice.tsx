@@ -1,18 +1,76 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialState = [
-  { id: '1', userName: 'Ernesto', message: 'Hello!' },
-  { id: '2', userName: 'Jose', message: 'Hello!' },
-  { id: '3', userName: 'Luca', message: 'Hello!' },
-  { id: '4', userName: 'Lautaro', message: 'Hello!' },
-  { id: '5', userName: 'Timo', message: 'Hello!' },
-  { id: '6', userName: 'Hany', message: 'Hello!' },
-]
+
+
+var initialState = [
+        {
+            id: 'xxxx',
+            userName: 'ernesto',
+            message: 'Ernesto 100 message'
+        },
+        {
+            id: 'xxxx',
+            userName: 'luca',
+            message: 'Luca 1 message'
+        },
+        {
+            id: 'xxxx',
+            userName: 'ernesto',
+            message: 'Ernesto 2 message'
+        },
+        {
+            id: 'xxxx',
+            userName: 'luca',
+            message: 'Luca 2 message'
+        },
+        {
+            id: 'xxxx',
+            userName: 'ernesto',
+            message: 'Ernesto 2 message'
+        },
+        {
+            id: 'xxxx',
+            userName: 'luca',
+            message: 'Luca 2 message'
+        },
+        {
+            id: 'xxxx',
+            userName: 'ernesto',
+            message: 'Ernesto 2 message'
+        },
+        {
+            id: 'xxxx',
+            userName: 'luca',
+            message: 'Luca 2222 message'
+        }
+    ];
+
 
 const messagesSlice = createSlice({
   name: 'messages',
   initialState,
-  reducers: {}
-})
+  reducers: {
+      addMessage(state, action) {
+          console.log('ADD MESSAGE');
+          state.push(action.payload)
+      }
+  }
+});
+
+
+export const { addMessage } = messagesSlice.actions;
 
 export default messagesSlice.reducer;
+
+
+
+
+
+
+
+
+
+
+
+
+
