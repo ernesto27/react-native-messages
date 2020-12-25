@@ -20,8 +20,7 @@ import { Provider } from 'react-redux';
 import store  from './src/store'
 import { HomeScreen } from './src/messages/HomeScreen';
 import { DetailMessageScreen } from './src/messages/DetailMessageScreen';
-
-
+import { LoginScreen } from './src/login/LoginScreen';
 
 function SettingsScreen({ navigation }) {
   return (
@@ -51,6 +50,7 @@ function SettingsStackScreen() {
 function HomeTabs() {
   return (
       <Tab.Navigator>
+        <Tab.Screen name="Login" component={LoginScreen} />
         <Tab.Screen name="Chats" component={HomeScreen} />
         <Tab.Screen name="Settings" component={SettingsScreen} />
       </Tab.Navigator>
@@ -66,6 +66,7 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <HomeStack.Navigator>
+
           <HomeStack.Screen name="Home" component={HomeTabs} />
           <HomeStack.Screen name="Details" component={DetailMessageScreen} />
         </HomeStack.Navigator>

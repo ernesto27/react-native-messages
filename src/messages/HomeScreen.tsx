@@ -3,10 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Body, Container, Content, Item, Left, List, ListItem, Right, Text } from "native-base";
 import { selectAllContacts, fetchContacts } from './contacsHomeSlice';
 
-
 export const HomeScreen = ({ navigation }) => {
     // const messages = useSelector(state => state.contactsHome)
-
     const dispatch = useDispatch();
     const contacts = useSelector(selectAllContacts)
 
