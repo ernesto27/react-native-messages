@@ -9,6 +9,7 @@ import {
 
 import auth from '@react-native-firebase/auth';
 import { Alert, SegmentedControlIOSComponent } from "react-native";
+import firebase from '@react-native-firebase/app';
 
 
 export const LoginScreen = () => {
@@ -17,16 +18,25 @@ export const LoginScreen = () => {
     const [userInfo, setuserInfo] = useState([]);
 
     useEffect(() => {
-        GoogleSignin.configure();
+        GoogleSignin.configure({
+          webClientId: "427531867493-an7ekulu0aruuscb19pe9tsli3cf7tnt.apps.googleusercontent.com",
+        });
     }, []);
 
     var _signIn = async () => {
+
         try {
             await GoogleSignin.hasPlayServices();
             const userInfo = await GoogleSignin.signIn();
         
             console.log(userInfo)
             alert(userInfo)
+
+            // Create a Google credential with the token
+           const googleCredential = auth.GoogleAuthProvider.credential(userInfo.idToken, userInfo.accessToken);
+
+          // Sign-in the user with the credential
+          await auth().signInWithCredential(googleCredential);
         } catch (error) {
             console.log(error)
           if (error.code === statusCodes.SIGN_IN_CANCELLED) {

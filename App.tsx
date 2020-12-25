@@ -50,7 +50,6 @@ function SettingsStackScreen() {
 function HomeTabs() {
   return (
       <Tab.Navigator>
-        <Tab.Screen name="Login" component={LoginScreen} />
         <Tab.Screen name="Chats" component={HomeScreen} />
         <Tab.Screen name="Settings" component={SettingsScreen} />
       </Tab.Navigator>
@@ -65,8 +64,8 @@ export default function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <HomeStack.Navigator>
-
+        <HomeStack.Navigator initialRouteName='Login'>
+          <HomeStack.Screen name="Login" component={LoginScreen} />
           <HomeStack.Screen name="Home" component={HomeTabs} />
           <HomeStack.Screen name="Details" component={DetailMessageScreen} />
         </HomeStack.Navigator>
