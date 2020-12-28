@@ -4,7 +4,6 @@ import { Body, Container, Content, Item, Left, List, ListItem, Right, Text } fro
 import { selectAllContacts, fetchContacts } from './contacsHomeSlice';
 
 export const HomeScreen = ({ navigation }) => {
-    // const messages = useSelector(state => state.contactsHome)
     const dispatch = useDispatch();
     const contacts = useSelector(selectAllContacts)
 
@@ -12,7 +11,7 @@ export const HomeScreen = ({ navigation }) => {
 
     useEffect(() => {
       if (contactStatus === 'idle') {
-        dispatch(fetchContacts())
+        dispatch(fetchContacts());
       }
     }, [contactStatus, dispatch])
 
@@ -20,9 +19,16 @@ export const HomeScreen = ({ navigation }) => {
         <Container>
           <Content>
             <List>
+
               {contacts.map((item, i) => { 
-                return <Text>{item.title}</Text>
+                return <Text>{item.username}</Text>
               })}
+
+
+           
+
+              
+
               {/* {messages.map((item, i:number) => { 
               return (
                 <ListItem 

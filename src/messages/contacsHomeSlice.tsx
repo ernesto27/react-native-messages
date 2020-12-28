@@ -1,18 +1,5 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-
-// const initialState = [
-//   { 
-//       id: '1', 
-//       userName: 'Ernesto', 
-//       message: 'Hello!',
-//       date: '' 
-//   },
-//   { id: '2', userName: 'Jose', message: 'Hello!' },
-//   { id: '3', userName: 'Luca', message: 'Hello!' },
-//   { id: '4', userName: 'Lautaro', message: 'Hello!' },
-//   { id: '5', userName: 'Timo', message: 'Hello!' },
-//   { id: '6', userName: 'Hany', message: 'Hello!' },
-// ]
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import firestore from '@react-native-firebase/firestore';
 
 const initialState = {
   contacts: [],
@@ -21,12 +8,32 @@ const initialState = {
 }
 
 
+// export const fetchContacts = createAsyncThunk('contacts/fetchContacts', async() => {
+//   console.log('FETCH CONTACTS')
+//   let response = await fetch('https://reactnative.dev/movies.json');
+//   let json = await response.json();
+//   console.log(json.movies)
+//   return json.movies;
+// });
+
 export const fetchContacts = createAsyncThunk('contacts/fetchContacts', async() => {
-  console.log('FETCH CONTACTS')
-  let response = await fetch('https://reactnative.dev/movies.json');
-  let json = await response.json();
-  console.log(json.movies)
-  return json.movies;
+  const contacts = await firestore()
+                  .collection('contacts')
+                  .get();
+
+  // TODO MAKE INTERFACE TYPESCRIPT
+  const data = [];
+  contacts.forEach(documentSnapshot => {
+    console.log('User ID: ', documentSnapshot.id, documentSnapshot.data());
+    data.push({
+      username: documentSnapshot.data().username
+    })
+  });
+
+  // return [
+  //   {username: 'ernesto'}
+  // ]
+  return data;
 });
 
 

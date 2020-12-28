@@ -64,7 +64,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <HomeStack.Navigator initialRouteName='Login'>
+        <HomeStack.Navigator initialRouteName='Home'>
           <HomeStack.Screen name="Login" component={LoginScreen} />
           <HomeStack.Screen name="Home" component={HomeTabs} />
           <HomeStack.Screen name="Details" component={DetailMessageScreen} />
