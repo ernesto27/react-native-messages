@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
 import { 
   Item, 
@@ -9,12 +9,10 @@ import {
   Button
 } from 'native-base';
 import { useDispatch, useSelector } from "react-redux";
-import { addMessage } from './messagesSlice';
+import { selectAllMessages, fetchMessages, AddMessage } from './messagesSlice';
 import { nanoid } from '@reduxjs/toolkit';
+import { Message } from '../interfaces';
 
-function renderText(item) {
-  return <Text>From funcion</Text>
-}
 
 export const DetailMessageScreen = ({ route, navigation }) => {
   
@@ -23,13 +21,16 @@ export const DetailMessageScreen = ({ route, navigation }) => {
     //   tabBarVisible: false
     // });
 
-    const messages = useSelector(state => state.messages);
-    console.log(messages)
-
-
-    const items = messages;
-
     const dispatch = useDispatch();
+    const messages = useSelector(selectAllMessages)
+
+    const messagesStatus = useSelector(state => state.messages.status );
+
+    useEffect(() => {
+      if (messagesStatus === 'idle') {
+        dispatch(fetchMessages());
+      }
+    }, [messagesStatus, dispatch])
   
     return (
       <KeyboardAvoidingView 
@@ -51,26 +52,30 @@ export const DetailMessageScreen = ({ route, navigation }) => {
             }}
           >
             <Content>
-              {items.map((item, i) => { 
+              {messages.map((item:Message, i:number) => { 
                 return ((i % 2 === 0) 
-                  ? (<Text style={{
-                        backgroundColor: '#f5f5f5', 
-                        width: '47%', 
-                        padding: 8, 
-                        marginLeft: 4, 
-                        borderRadius: 6,
-                        marginTop: 4
+				  ? (<Text
+						key={i} 
+						style={{
+                        	backgroundColor: '#f5f5f5', 
+                        	width: '47%', 
+                        	padding: 8, 
+                        	marginLeft: 4, 
+                        	borderRadius: 6,
+                        	marginTop: 4
                       }}>
                         {item.message}
                       </Text>)
-                  : <Text style={{
-                      backgroundColor: '#86f78c',
-                      width: '47%',
-                      alignSelf: 'flex-end',
-                      marginRight: 6,
-                      padding: 8, 
-                      borderRadius: 6    
-                    }}>
+				  : <Text 
+					  	key={i}
+				  		style={{
+                      		backgroundColor: '#86f78c',
+                      		width: '47%',
+                      		alignSelf: 'flex-end',
+                      		marginRight: 6,
+                      		padding: 8, 
+                      		borderRadius: 6    
+                    	}}>
                       {item.message}
                     </Text>)
               })}
@@ -96,13 +101,12 @@ export const DetailMessageScreen = ({ route, navigation }) => {
                   }}
                   info
                   onPress={ () => {
-                    //alert('Press')
-                    dispatch(
-                      addMessage({
-                        id: nanoid(),
-                        message: 'New message'
-                      })
-                    )
+                    const newMessage:Message = {
+                    	userName: 'newuser',
+                      	message: 'message from screen',
+                      	uid: '777'
+                    }
+                    dispatch(AddMessage(newMessage))
 
                   }}
                 >

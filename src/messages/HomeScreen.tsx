@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { Body, Container, Content, Item, Left, List, ListItem, Right, Text } from "native-base";
+import { Body, Container, Content, Item, Left, List, ListItem, Right, Text, Thumbnail } from "native-base";
 import { selectAllContacts, fetchContacts } from './contacsHomeSlice';
+import { Contact } from '../interfaces';
 
 export const HomeScreen = ({ navigation }) => {
     const dispatch = useDispatch();
@@ -19,29 +20,11 @@ export const HomeScreen = ({ navigation }) => {
         <Container>
           <Content>
             <List>
-
-              {contacts.map((item, i) => { 
-                return <Text>{item.username}</Text>
-              })}
-
-
-           
-
-              
-
-              {/* {messages.map((item, i:number) => { 
+              {contacts.map((item:Contact, i:number) => { 
               return (
                 <ListItem 
                   key={i} 
                   onPress={() =>  {
-                    dispatch(contactsAdd({
-                      
-                        id: '1', 
-                        userName: 'WALTER', 
-                        message: 'Hello!',
-                        date: '' 
-                    
-                    }))
                     navigation.navigate({ name: 'Details', params: { user: 'Ernesto'} })
                   }}
                   avatar>
@@ -50,13 +33,13 @@ export const HomeScreen = ({ navigation }) => {
                   </Left>
                   <Body>
                     <Text>{item.userName}</Text>
-                    <Text note>{item.message}</Text>
+                    <Text note>{item.lastMessage}</Text>
                   </Body>
                   <Right>
                     <Text note>3:43 pm</Text>
                   </Right>
                 </ListItem>)
-              })} */}
+              })}
             </List>
           </Content>
         </Container>
