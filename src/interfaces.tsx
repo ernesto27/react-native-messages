@@ -4,7 +4,7 @@ export interface Contact {
 }
 
 export interface Message {
-    userName: string,
+    userName: string | null | undefined,
     message: string,
-    uid: string
+    uid: string | null | undefined
 }

@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Alert, KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
 import { 
   Item, 
   Input,  
@@ -10,8 +10,8 @@ import {
 } from 'native-base';
 import { useDispatch, useSelector } from "react-redux";
 import { selectAllMessages, fetchMessages, AddMessage } from './messagesSlice';
-import { nanoid } from '@reduxjs/toolkit';
 import { Message } from '../interfaces';
+import firebase from '@react-native-firebase/app';
 
 
 export const DetailMessageScreen = ({ route, navigation }) => {
@@ -23,8 +23,10 @@ export const DetailMessageScreen = ({ route, navigation }) => {
 
     const dispatch = useDispatch();
     const messages = useSelector(selectAllMessages)
-
     const messagesStatus = useSelector(state => state.messages.status );
+
+
+    const [textMessage, setMessage] = useState<string>('');
 
     useEffect(() => {
       if (messagesStatus === 'idle') {
@@ -91,6 +93,7 @@ export const DetailMessageScreen = ({ route, navigation }) => {
               <Item>
                 <Input 
                   placeholder={"New message"}
+                  onChangeText={(value) => setMessage(value)} 
                 />
   
                 <Button
@@ -101,10 +104,16 @@ export const DetailMessageScreen = ({ route, navigation }) => {
                   }}
                   info
                   onPress={ () => {
+                    let userName:string | null | undefined = '';
+                    let uid:string | null | undefined = '';
+                    if (firebase.auth().currentUser) {
+                      userName = firebase.auth().currentUser?.displayName;
+                      uid = firebase.auth().currentUser?.uid;
+                    }
                     const newMessage:Message = {
-                    	userName: 'newuser',
-                      	message: 'message from screen',
-                      	uid: '777'
+                    	  userName: userName,
+                      	message: textMessage,
+                      	uid: uid
                     }
                     dispatch(AddMessage(newMessage))
 

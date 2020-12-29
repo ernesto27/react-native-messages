@@ -12,7 +12,7 @@ import { Alert, SegmentedControlIOSComponent } from "react-native";
 import firebase from '@react-native-firebase/app';
 
 
-export const LoginScreen = () => {
+export const LoginScreen = ({ navigation }) => {
 
     const [loggedIn, setloggedIn] = useState(false);
     const [userInfo, setuserInfo] = useState([]);
@@ -21,6 +21,20 @@ export const LoginScreen = () => {
         GoogleSignin.configure({
           webClientId: "427531867493-an7ekulu0aruuscb19pe9tsli3cf7tnt.apps.googleusercontent.com",
         });
+
+        const user = firebase.auth().currentUser;
+
+        if (user) {
+          console.log('User ', user);
+          navigation.reset({
+            index: 0,
+            routes: [
+              {
+                name: 'Home',
+              },
+            ],
+          })
+        }
     }, []);
 
     var _signIn = async () => {
@@ -30,15 +44,24 @@ export const LoginScreen = () => {
             const userInfo = await GoogleSignin.signIn();
         
             console.log(userInfo)
-            alert(userInfo)
 
             // Create a Google credential with the token
-           const googleCredential = auth.GoogleAuthProvider.credential(userInfo.idToken, userInfo.accessToken);
+            const googleCredential = auth.GoogleAuthProvider.credential(userInfo.idToken, userInfo.accessToken);
+            // navigation.navigate({ name: 'Home'});
+
+            navigation.reset({
+              index: 0,
+              routes: [
+                {
+                  name: 'Home',
+                },
+              ],
+            })
 
           // Sign-in the user with the credential
           await auth().signInWithCredential(googleCredential);
         } catch (error) {
-            console.log(error)
+          alert('Error on google login');
           if (error.code === statusCodes.SIGN_IN_CANCELLED) {
             // user cancelled the login flow
             alert('Cancel');

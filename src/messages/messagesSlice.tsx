@@ -32,7 +32,7 @@ export const fetchMessages = createAsyncThunk('messages/fetchMessages', async() 
 export const AddMessage = createAsyncThunk('messages/AddMessage', async data => {
     console.log(data)
     const newMessage = await firestore()
-                        .collection('99999999')
+                        .collection(data.uid + '-' + data.uid )
                         .add(data)
     
     console.log(newMessage);
