@@ -55,32 +55,35 @@ export const DetailMessageScreen = ({ route, navigation }) => {
           >
             <Content>
               {messages.map((item:Message, i:number) => { 
-                return ((i % 2 === 0) 
+                return ((item.uid === firebase.auth().currentUser?.uid) 
 				  ? (<Text
-						key={i} 
-						style={{
-                        	backgroundColor: '#f5f5f5', 
-                        	width: '47%', 
-                        	padding: 8, 
-                        	marginLeft: 4, 
-                        	borderRadius: 6,
-                        	marginTop: 4
-                      }}>
-                        {item.message}
-                      </Text>)
+              key={i}
+              style={{
+                backgroundColor: '#86f78c',
+                width: '47%',
+                alignSelf: 'flex-end',
+                marginRight: 6,
+                padding: 8, 
+                borderRadius: 6,
+                marginTop: 6    
+              }} 
+						  >
+              {item.message}
+            </Text>)
+
 				  : <Text 
 					  	key={i}
 				  		style={{
-                      		backgroundColor: '#86f78c',
-                      		width: '47%',
-                      		alignSelf: 'flex-end',
-                      		marginRight: 6,
-                      		padding: 8, 
-                      		borderRadius: 6    
-                    	}}>
-                      {item.message}
-                    </Text>)
-              })}
+                backgroundColor: '#f5f5f5', 
+                width: '47%', 
+                padding: 8, 
+                marginLeft: 4, 
+                borderRadius: 6,
+                marginTop: 4
+              }}>
+                {item.message}
+              </Text>)
+          })}
   
             </Content>
           </View>

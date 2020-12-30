@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import firestore from '@react-native-firebase/firestore';
 import { Message } from '../interfaces';
-
+import firebase from '@react-native-firebase/app';
 
 const initialState = {
 	messages: [],
@@ -11,11 +11,12 @@ const initialState = {
 
 export const fetchMessages = createAsyncThunk('messages/fetchMessages', async() => {
     const messages = await firestore()
-                            .collection('messages')
+                            .collection('messages/'+ firebase.auth().currentUser?.uid +'-9999/messages')
                             .get();
 
     console.log('FETCH MESSAGES');
     const data:Message[] = [];
+    console.log(messages)
     messages.forEach(documentSnapshot => {
       console.log('User ID: ', documentSnapshot.id, documentSnapshot.data());
         data.push({
@@ -32,7 +33,7 @@ export const fetchMessages = createAsyncThunk('messages/fetchMessages', async() 
 export const AddMessage = createAsyncThunk('messages/AddMessage', async data => {
     console.log(data)
     const newMessage = await firestore()
-                        .collection(data.uid + '-' + data.uid )
+                        .collection('messages/' + data.uid + '-9999/messages')
                         .add(data)
     
     console.log(newMessage);
