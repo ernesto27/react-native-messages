@@ -1,64 +1,71 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import firestore from '@react-native-firebase/firestore';
+import { Message } from '../interfaces';
+import firebase from '@react-native-firebase/app';
+
+const initialState = {
+	messages: [],
+  	status: 'idle',
+  	error: null
+}
+
+export const fetchMessages = createAsyncThunk('messages/fetchMessages', async() => {
+    const messages = await firestore()
+                            .collection('messages/'+ firebase.auth().currentUser?.uid +'-9999/messages')
+                            .get();
+
+    console.log('FETCH MESSAGES');
+    const data:Message[] = [];
+    console.log(messages)
+    messages.forEach(documentSnapshot => {
+      console.log('User ID: ', documentSnapshot.id, documentSnapshot.data());
+        data.push({
+            userName: documentSnapshot.data().userName,
+            message: documentSnapshot.data().message,
+            uid: documentSnapshot.data().uid
+        });
+    });
+
+    return data;
+});
 
 
-
-var initialState = [
-        {
-            id: 'xxxx',
-            userName: 'ernesto',
-            message: 'Ernesto 100 message'
-        },
-        {
-            id: 'xxxx',
-            userName: 'luca',
-            message: 'Luca 1 message'
-        },
-        {
-            id: 'xxxx',
-            userName: 'ernesto',
-            message: 'Ernesto 2 message'
-        },
-        {
-            id: 'xxxx',
-            userName: 'luca',
-            message: 'Luca 2 message'
-        },
-        {
-            id: 'xxxx',
-            userName: 'ernesto',
-            message: 'Ernesto 2 message'
-        },
-        {
-            id: 'xxxx',
-            userName: 'luca',
-            message: 'Luca 2 message'
-        },
-        {
-            id: 'xxxx',
-            userName: 'ernesto',
-            message: 'Ernesto 2 message'
-        },
-        {
-            id: 'xxxx',
-            userName: 'luca',
-            message: 'Luca 2222 message'
-        }
-    ];
-
+export const AddMessage = createAsyncThunk('messages/AddMessage', async data => {
+    console.log(data)
+    const newMessage = await firestore()
+                        .collection('messages/' + data.uid + '-9999/messages')
+                        .add(data)
+    
+    console.log(newMessage);
+    return data;
+});
 
 const messagesSlice = createSlice({
   name: 'messages',
   initialState,
-  reducers: {
-      addMessage(state, action) {
-          console.log('ADD MESSAGE');
-          state.push(action.payload)
-      }
+  reducers: {},
+  extraReducers: {
+    [fetchMessages.pending]: (state, action) => {
+          state.status = 'loading';
+    },
+    [fetchMessages.fulfilled]: (state, action) => {
+          state.status = 'succeeded';
+          state.messages = state.messages.concat(action.payload);
+    },
+    [fetchMessages.rejected]: (state, action) => {
+          state.status = 'failed';
+          state.error = action.error.message;
+    },
+
+    [AddMessage.fulfilled]: (state, action) => {
+        console.log(action.payload)
+        state.messages.push(action.payload)
+    }
   }
 });
 
 
-export const { addMessage } = messagesSlice.actions;
+export const selectAllMessages = state => state.messages.messages;
 
 export default messagesSlice.reducer;
 

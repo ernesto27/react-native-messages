@@ -20,17 +20,22 @@ import { Provider } from 'react-redux';
 import store  from './src/store'
 import { HomeScreen } from './src/messages/HomeScreen';
 import { DetailMessageScreen } from './src/messages/DetailMessageScreen';
-
-
+import { LoginScreen } from './src/login/LoginScreen';
+import firebase from '@react-native-firebase/app';
+import { useEffect, useState } from 'react';
 
 function SettingsScreen({ navigation }) {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Settings screen</Text>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', alignContent: 'center' }}>
       <Button
-        title="Go to Details"
-        onPress={() => navigation.navigate('Details')}
-      />
+        onPress={() => {
+          // Logout
+          firebase.auth().signOut();
+          //navigation.navigate('Login');
+        }}>
+          <Text>Logout</Text>
+        </Button>
+      
     </View>
   );
 }
@@ -39,14 +44,6 @@ const HomeStack = createStackNavigator();
 
 
 const SettingsStack = createStackNavigator();
-
-function SettingsStackScreen() {
-  return (
-    <SettingsStack.Navigator>
-      <SettingsStack.Screen name="Home" component={SettingsScreen} />
-    </SettingsStack.Navigator>
-  );
-}
 
 function HomeTabs() {
   return (
@@ -62,14 +59,42 @@ const Tab = createBottomTabNavigator();
 
 export default function App() {
 
+  const [isLogged, setIsLogged] = useState(false);
+
+  useEffect(() => {
+    console.log('APP USE EFFECT');
+    const currentUser = firebase.auth().currentUser;
+
+    if (currentUser) {
+      console.log('User ', currentUser);
+      setIsLogged(true);
+    }
+  }, [])
+
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <HomeStack.Navigator>
+        <HomeStack.Navigator initialRouteName='Login'>
+          <HomeStack.Screen name="Login" component={LoginScreen} />
           <HomeStack.Screen name="Home" component={HomeTabs} />
           <HomeStack.Screen name="Details" component={DetailMessageScreen} />
         </HomeStack.Navigator>
       </NavigationContainer>
     </Provider>
+
+    // <Provider store={store}>
+    //   <NavigationContainer>
+    //     <HomeStack.Navigator>
+    //       {isLogged === true ? (
+    //         <>
+    //         <HomeStack.Screen name="Home" component={HomeTabs} />
+    //         <HomeStack.Screen name="Details" component={DetailMessageScreen} />
+    //         </>
+    //       ): (
+    //         <HomeStack.Screen name="Login" component={LoginScreen} />
+    //       )}
+    //     </HomeStack.Navigator>
+    //   </NavigationContainer>
+    // </Provider>
   );
 }
